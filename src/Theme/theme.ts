@@ -1,26 +1,33 @@
 import { createMuiTheme } from "@material-ui/core"
-import MountHills from "../assets/fonts/mount_hills/Mount-Hills.otf"
+import Lato from "../../public/assets/fonts/Lato/Lato-Regular.ttf"
 
 
-const mounthills = {
-    fontFamily: "MountHills",
+const lato = {
+    fontFamily: "Lato",
     fontStyle: "normal",
-    fontDisplay: "swap",
-    fontWeight: 400,
-    src: `local('mounthills'),url(${MountHills})`
+    fontWeight: 65,
+    src: `local('lato'),url(${Lato})`
 }
 
 const Theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: "#e2843c"
+        },
+        secondary: {
+            main: "#DA445B"
+        }
+    },
     typography: {
-        fontFamily: "MountHills"
+        fontFamily: "Lato"
     },
     overrides: {
         MuiCssBaseline: {
             '@global': {
-                '@font-face': [mounthills]
+                '@font-face': [lato]
             }
         }
     }
 })
 
-export default theme
+export default Theme

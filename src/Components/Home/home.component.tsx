@@ -1,4 +1,4 @@
-import { Button, Grid, Select, MenuItem, Typography, InputLabel, Snackbar } from "@material-ui/core"
+import { Button, Grid, Select, MenuItem, Typography, InputLabel, Snackbar, FormControl } from "@material-ui/core"
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
 import React, { FunctionComponent, useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
@@ -8,14 +8,18 @@ import { makeStyles } from "@material-ui/core/styles"
 import INotification from "../../ìnterfaces/notification.interface"
 
 const useTheme = makeStyles({
-    root: {
-        border: "1px solid black"
-    },
     middle: {
         justifyContent: "center"
     },
     notifs: {
-        border: "1px solid black"
+        padding: "0 3%"
+    },
+    notif: {
+        marginBottom: "2%"
+    },
+    formControl: {
+        minWidth: 120,
+        margin: "7% 3%"
     }
 })
 
@@ -109,21 +113,22 @@ const Home: FunctionComponent = () =>
         const payload = {
             targetId: id
         }
-        let response = await axios.post("http://localhost:8000/user/sendshot", payload, {
-            headers: { "Authorization": "Bearer "+ token }
+        axios.post("http://localhost:8000/user/sendshot", payload, {
+                headers: { "Authorization": "Bearer "+token }
         })
-        if (response.status === 200)
+        .then(response =>
         {
             setOpenSnack(true)
             setIsError(false)
             setMessage(response.data.message)
-        }
-        if (response.status === 400)
+            setUserWhoDrink('')
+        })
+        .catch(error =>
         {
             setOpenSnack(true)
             setIsError(true)
-            setMessage(response.data.message)
-        }
+            setMessage(error.response.data.message)
+        })
     }
 
     const handleWhoDrink = (id: any) => 
@@ -160,40 +165,39 @@ const Home: FunctionComponent = () =>
         }
     }
 
-    const handleSnackClose = () =>
-    {
-
-    }
+    const handleSnackClose = () => {}
 
 
     return (
-        <Grid container direction="column" className={classes.root}>
-            <Grid item container md={2}>
-                <InputLabel id="userSelect">Utilisateur</InputLabel>
-                <Select
-                labelId="userSelect"
-                    value={userWhoDrink}
-                    onChange={event => handleWhoDrink(event.target.value)}>
-                {
-                    users.map((user: IUser, idx: number) =>
-                    (
-                        <MenuItem key={idx} value={user._id}>
-                            <Typography>
-                                { user.name }
-                            </Typography>
-                        </MenuItem>
-                    ))
-                }
-                </Select>
+        <Grid container direction="column">
+            <Grid item container justify="center" alignItems="baseline">
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="userSelect">User</InputLabel>
+                    <Select
+                        labelId="userSelect"
+                        value={userWhoDrink}
+                        onChange={event => handleWhoDrink(event.target.value)}>
+                    {
+                        users.map((user: IUser, idx: number) =>
+                        (
+                            <MenuItem key={idx} value={user._id}>
+                                <Typography>
+                                    { user.name }
+                                </Typography>
+                            </MenuItem>
+                        ))
+                    }
+                    </Select>
+                </FormControl>
                 <Grid item>
-                    <Button onClick={event => sendShotTo(userWhoDrink)} >Send a shot !</Button>
+                    <Button onClick={event => sendShotTo(userWhoDrink)} color="primary" variant="outlined">Send a shot !</Button>
                 </Grid>
             </Grid>
             <Grid item container className={ classes.notifs }>
                     {
-                        notifs.map((notif: INotification) =>
+                        notifs.map((notif: INotification, idx: number) =>
                         (
-                            <Grid item container md={3} direction="column">
+                            <Grid item container md={3} direction="column" key={idx} className={classes.notif}>
                                 <Grid item>
                                     <Typography>{ notif.title }</Typography>
                                 </Grid>
@@ -201,8 +205,8 @@ const Home: FunctionComponent = () =>
                                     <Typography>{ notif.message }</Typography>
                                 </Grid>
                                 <Grid item container>
-                                    <Button onClick={event => handleDrinking(true)}>I've drunk !</Button>
-                                    <Button onClick={event => handleDrinking(false)}>I'm a pussy...</Button>
+                                    <Button onClick={event => handleDrinking(true)} color="primary">I've drunk !</Button>
+                                    <Button onClick={event => handleDrinking(false)} color="secondary">I'm a pussy...</Button>
                                 </Grid>
                             </Grid>
                         ))

@@ -6,7 +6,7 @@ const Header: FunctionComponent = () =>
     return (
         <AppBar position="static">
             <Grid container justify="center">
-                <Typography>
+                <Typography variant="h5">
                     Orf... fallait un nom
                 </Typography>
             </Grid>

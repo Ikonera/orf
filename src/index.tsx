@@ -5,15 +5,18 @@ import { BrowserRouter as Router } from "react-router-dom"
 import Header from "./Components/Header/header.component"
 import theme from "./Theme/theme"
 import RouterView from "./Components/RouterView/routerView.component"
+import Theme from "./Theme/theme"
 
 const App: FunctionComponent = () =>
 {
     return (
-        <Router>
-            <CssBaseline />
-            <Header />
-            <RouterView />
-        </Router>
+        <ThemeProvider theme={Theme}>
+            <Router>
+                <CssBaseline />
+                <Header />
+                <RouterView />
+            </Router>
+        </ThemeProvider>
     )
 }
 
