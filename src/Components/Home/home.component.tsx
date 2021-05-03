@@ -30,6 +30,7 @@ const Home: FunctionComponent = () =>
     const [users, setUsers] = useState([])
     const [notifs, setNotifs] = useState([])
     const [userWhoDrink, setUserWhoDrink] = useState('')
+    const [needBottle, setNeedBottle] = useState(false)
     const [openSnack, setOpenSnack] = useState(false)
     const [isError, setIsError] = useState(false)
     const [message, setMessage] = useState('')
@@ -151,12 +152,40 @@ const Home: FunctionComponent = () =>
                 setOpenSnack(true)
                 setIsError(false)
                 setMessage(response.data.message)
+                if (response.data.user.shotNumber === 0) setNeedBottle(true)
             })
             .catch(error =>
             {
                 setOpenSnack(true)
                 setIsError(true)
                 setMessage(error.response.data)
+            })
+        }
+        catch (error)
+        {
+            console.log(error)
+        }
+    }
+
+    const handleBuyBottle = () =>
+    {
+        try
+        {
+            axios.put("http://localhost:8000/user/bottle", {
+                headers: { "Authorization": "Bearer "+token }
+            })
+            .then(response =>
+            {
+                setOpenSnack(true)
+                setIsError(false)
+                setMessage(response.data.message)
+                setNeedBottle(false)
+            })
+            .catch(error =>
+            {
+                setOpenSnack(true)
+                setIsError(true)
+                setMessage(error.response.data.message)
             })
         }
         catch (error)
@@ -191,6 +220,9 @@ const Home: FunctionComponent = () =>
                 </FormControl>
                 <Grid item>
                     <Button onClick={event => sendShotTo(userWhoDrink)} color="primary" variant="outlined">Send a shot !</Button>
+                    {
+                        (needBottle && <Button onClick={handleBuyBottle} color="secondary" variant="outlined">Buy new bottle !</Button>)
+                    }
                 </Grid>
             </Grid>
             <Grid item container className={ classes.notifs }>

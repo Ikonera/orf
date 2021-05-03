@@ -68,7 +68,7 @@ const Register: FunctionComponent = () =>
     return (
         <form>
             <Grid container direction="column" className={classes.root}>
-                <TextField className={classes.input} label="Mail address" onChange={event => setMailAddress(event.target.value)}></TextField>
+                <TextField className={classes.input} label="Mail address" onChange={event => setMailAddress(event.target.value)} autoFocus></TextField>
                 <TextField className={classes.input} label="Username" onChange={event => setName(event.target.value)}></TextField>
                 <TextField className={classes.input} label="Password" onChange={event => setPassword(event.target.value)}></TextField>
                 <Link to="/connexion" className={classes.haveAnAccount}>

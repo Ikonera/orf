@@ -12,7 +12,7 @@ const lato = {
 const Theme = createMuiTheme({
     palette: {
         primary: {
-            main: "#e2843c"
+            main: "#FF776F"
         },
         secondary: {
             main: "#DA445B"
