@@ -158,7 +158,7 @@ const Home: FunctionComponent = () =>
             {
                 setOpenSnack(true)
                 setIsError(true)
-                setMessage(error.response.data)
+                setMessage(error.response.data.message)
             })
         }
         catch (error)
