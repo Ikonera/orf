@@ -1,3 +1,0 @@
-# src
-
-## App source folder
